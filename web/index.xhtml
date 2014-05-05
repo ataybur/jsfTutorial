@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+
+        <h:form id="form">
+            <script type="text/javascript" src="js/jquery-1.7.1.js"></script>
+
+
+            <h:outputText id="naptinOutput" value="laylaylay" />
+            #{TutorialMB.naptin}
+            <p:dataTable value="#{TutorialMB.customerList}" var="customer" >
+                <p:column headerText="İsim" >
+                    #{customer.name}
+                </p:column>
+                <p:column headerText="Eposta">
+                    #{customer.email}
+                </p:column>
+                <p:column headerText="Telefon">
+                    #{customer.phone}
+                </p:column>    
+                <p:column headerText="İl">
+                    #{customer.state}
+                </p:column>    
+                <p:column headerText="İndirim Kodu">
+                    <h:outputText converter="#{discountCodeConverter}"  value="#{customer.discountCode.discountCode}" />
+                </p:column>    
+                <p:column headerText="Zip">
+                    <h:outputText converter="#{microMarketConverter}"  value="#{customer.zip.zipCode}" />
+                </p:column>    
+            </p:dataTable>
+            <p:commandButton value="ben bir primefaces butonuyum" type="button" action="#{TutorialMB.dialogShowingListener}" update=":form:customerAddingDialogPanel" id="butonId" onclick="customerAddingDialog.show()" />
+
+
+            <p:dialog widgetVar="customerAddingDialog" id="customerAddingDialog" modal="true" appendToBody="false" >
+                <!--<h:form id="formForDialog">-->
+                    <p:outputPanel id="customerAddingDialogPanel" styleClass="customerAddingDialogClass" >
+                        <h:panelGrid columns="2">
+                            <h:outputLabel for="name" value="İsim:" />  
+                            <p:inputText id ="name" value="#{TutorialMB.customerForAdding.name}"  />
+                            <h:outputLabel for="email" value="E-posta: " />  
+                            <p:inputText id ="email" value="#{TutorialMB.customerForAdding.email}" />
+                            <h:outputLabel for="phone" value="Telefon:" />  
+                            <p:inputText id ="phone" value="#{TutorialMB.customerForAdding.phone}"  />
+                            <h:outputLabel for="discountCode" value="İndirim Kodu:" />  
+                            <p:selectOneMenu id="discountCode" value="#{TutorialMB.selectedDiscountCode}" converter="#{discountCodeConverter}" >  
+                                <f:selectItem itemLabel="Seçiniz" itemValue="" />  
+                                <f:selectItems value="#{TutorialMB.discountCodeList}" var="discountCode" itemValue="#{discountCode}" itemLabel="#{discountCode.discountCode}" />  
+                            </p:selectOneMenu>  
+
+                            <h:outputLabel for="microMarket" value="Mikro Market:" />  
+                            <p:selectOneMenu id="microMarket" value="#{TutorialMB.selectedMicroMarket}" converter="#{microMarketConverter}" >   
+                                <f:selectItem itemLabel="Seçiniz" itemValue="" />  
+                                <f:selectItems value="#{TutorialMB.microMarketList}"  var="temp" itemValue="#{temp}" itemLabel="#{temp.zipCode}" />  
+                            </p:selectOneMenu>  
+
+                            <h:outputLabel for="state" value="İl:" />  
+                            <p:inputText id ="state" value="#{TutorialMB.customerForAdding.state}" maxlength="2" />
+                        </h:panelGrid>
+                    </p:outputPanel>
+                    <p:commandButton value="Kaydet" actionListener="#{TutorialMB.save(TutorialMB.customerForAdding)}"   ajax="true" partialSubmit="true" process=":form" update=":form"  />
+                <!--</h:form>-->
+            </p:dialog>
+        </h:form>
+        <br />
+        <h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />
+    </h:body>
+</html>
+
